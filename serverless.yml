@@ -23,6 +23,16 @@ org: ninomaj
 provider:
   name: aws
   runtime: python3.8
+  environment:
+    DYNAMODB_TABLE: slsjams-voteCounts
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Scan
+        - dynamodb:UpdateItem
+        - dynamodb:putItem
+      # First * is region (e.g. us-east-1), second * is accountId for service (e.g. 544335435)
+      Resource: "arn:aws:dynamodb:*:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -60,6 +70,22 @@ provider:
 functions:
   hello:
     handler: handler.hello
+
+resources:
+  Resources:
+    songsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: songName
+            AttributeType: S
+        KeySchema:
+          - AttributeName: songName
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
