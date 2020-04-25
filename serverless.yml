@@ -70,6 +70,8 @@ provider:
 functions:
   recordSongVotes:
     handler: backend/record_song_vote.handler
+  getSongVoteCounts:
+    handler: backend/get_song_vote_counts.handler
 
 resources:
   Resources:
