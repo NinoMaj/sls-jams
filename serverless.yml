@@ -68,8 +68,8 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  recordSongVotes:
+    handler: backend/record_song_vote.handler
 
 resources:
   Resources:
