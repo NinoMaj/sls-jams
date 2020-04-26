@@ -25,6 +25,8 @@ provider:
   runtime: python3.8
   environment:
     DYNAMODB_TABLE: slsjams-voteCounts
+    AUTH0_DOMAIN: "ninomaj.eu.auth0.com"
+    AUTH0_API_ID: "rxda5s5gx6"
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -68,12 +70,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  auth:
+    handler: baclend/auth.handler
   recordSongVotes:
     handler: backend/record_song_vote.handler
     events:
       - http:
           path: song/vote
           method: post
+          authorizer:
+            name: auth
           cors: true
   getSongVoteCounts:
     handler: backend/get_song_vote_counts.handler
@@ -157,3 +163,11 @@ custom:
     bucketName: sls-jams-bucket-name
     distributionFolder: frontend # dist folder path
     errorDocument: index.html # overridding deufalt error.html
+  pythonRequirements:
+    dockerizePip: non-linux
+
+package:
+  exclude:
+    - node_modules/**
+    - frontend/**
+    - package-lock.json
