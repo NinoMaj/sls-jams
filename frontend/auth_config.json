@@ -1,4 +1,5 @@
 {
   "domain": "ninomaj.eu.auth0.com",
-  "clientId": "XJEvDJp102B7O6l7jDKG1gxDboSe5edz"
+  "clientId": "XJEvDJp102B7O6l7jDKG1gxDboSe5edz",
+  "audience": "rxda5s5gx6"
 }
